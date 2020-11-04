@@ -23,6 +23,12 @@ class _AddTodoState extends State<AddTodo> {
     }
   }
 
+  void _insertTask(BuildContext context) {
+    print(_task);
+    print(_details);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,7 @@ class _AddTodoState extends State<AddTodo> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () => {Navigator.of(context).pop()},
+          onPressed: () => {_insertTask(context)},
         ),
       ),
       floatingActionButton: RaisedButton(
@@ -64,14 +70,14 @@ class _AddTodoState extends State<AddTodo> {
                   border: OutlineInputBorder(),
                   labelText: 'New Task',
                 ),
-                onChanged: (text) => {
-                  _setTask(text)
-                },
+                onChanged: (text) => {_setTask(text)},
               ),
             ),
             Container(
               margin: EdgeInsets.all(5),
               child: TextField(
+                  maxLines: 10,
+                  keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Details',
