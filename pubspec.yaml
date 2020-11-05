@@ -21,6 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  moor: ^3.4.0
+  moor_ffi: ^0.8.0
+  path_provider: ^1.6.24
+  path: ^1.7.0
   flutter:
     sdk: flutter
 
@@ -30,6 +34,8 @@ dependencies:
   cupertino_icons: ^1.0.0
 
 dev_dependencies:
+  moor_generator: ^3.4.0
+  build_runner: ^1.10.4
   flutter_test:
     sdk: flutter
 

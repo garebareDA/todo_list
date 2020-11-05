@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moor/moor.dart' as moor;
+import 'package:todo_list/db.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -26,6 +28,11 @@ class _AddTodoState extends State<AddTodo> {
   void _insertTask(BuildContext context) {
     print(_task);
     print(_details);
+    Database().addTodoEntry(TodosCompanion(
+      title: moor.Value(_task),
+      details: moor.Value(_details),
+      isdone: moor.Value(false),
+    ));
     Navigator.of(context).pop();
   }
 
@@ -53,7 +60,7 @@ class _AddTodoState extends State<AddTodo> {
         shape: StadiumBorder(),
         highlightColor: Colors.blue,
         onPressed:
-            !_addButtonEnabled ? null : () => {Navigator.of(context).pop()},
+            !_addButtonEnabled ? null : () => {_insertTask(context)},
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
@@ -76,7 +83,7 @@ class _AddTodoState extends State<AddTodo> {
             Container(
               margin: EdgeInsets.all(5),
               child: TextField(
-                  maxLines: 10,
+                  maxLines: 9,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
