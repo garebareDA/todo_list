@@ -1,8 +1,8 @@
-//import 'dart:io';
+import 'dart:io';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
-//import 'package:path_provider/path_provider.dart';
-//import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 part 'db.g.dart';
 
@@ -15,7 +15,9 @@ class Todos extends Table {
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    return VmDatabase.memory();
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
   });
 }
 
@@ -33,5 +35,9 @@ class Database extends _$Database {
 
   Future<int> addTodoEntry(TodosCompanion entry) {
     return into(todos).insert(entry);
+  }
+
+  Future<int> updateTodo(int id, TodosCompanion todo) {
+    return (update(todos)..where((it) => it.id.equals(id))).write(todo);
   }
 }

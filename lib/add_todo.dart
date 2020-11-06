@@ -11,6 +11,7 @@ class _AddTodoState extends State<AddTodo> {
   String _task = "";
   String _details = "";
   bool _addButtonEnabled = false;
+  Database db = Database();
 
   void _setTask(String task) {
     if (task != '') {
@@ -28,7 +29,7 @@ class _AddTodoState extends State<AddTodo> {
   void _insertTask(BuildContext context) {
     print(_task);
     print(_details);
-    Database().addTodoEntry(TodosCompanion(
+    db.addTodoEntry(TodosCompanion(
       title: moor.Value(_task),
       details: moor.Value(_details),
       isdone: moor.Value(false),
@@ -45,7 +46,9 @@ class _AddTodoState extends State<AddTodo> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () => {_insertTask(context)},
+          onPressed: () => {
+            Navigator.of(context).pop()
+          },
         ),
       ),
       floatingActionButton: RaisedButton(
@@ -59,8 +62,7 @@ class _AddTodoState extends State<AddTodo> {
         disabledTextColor: Colors.black26,
         shape: StadiumBorder(),
         highlightColor: Colors.blue,
-        onPressed:
-            !_addButtonEnabled ? null : () => {_insertTask(context)},
+        onPressed: !_addButtonEnabled ? null : () => {_insertTask(context)},
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
