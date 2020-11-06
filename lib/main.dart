@@ -52,9 +52,7 @@ class _BodyState extends State<Body> with RouteAware {
     Future<List<Todo>> future = db.allTodoEntries;
     future
         .then((value) => {
-              print(value),
               value.forEach((element) {
-                print(element.title);
                 setState(() {
                   _todoList.add(TodoView(todo: element));
                 });

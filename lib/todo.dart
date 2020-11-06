@@ -74,7 +74,7 @@ class _TodoState extends State<TodoView> {
         )),
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.edit),
+          icon: Icon(Icons.keyboard_arrow_right),
         ),
       ]),
     );
