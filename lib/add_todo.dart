@@ -26,7 +26,7 @@ class _AddTodoState extends State<AddTodo> {
     }
   }
 
-  void _insertTask(BuildContext context) {
+  void _insertTask() {
     print(_task);
     print(_details);
     db.addTodoEntry(TodosCompanion(
@@ -34,7 +34,6 @@ class _AddTodoState extends State<AddTodo> {
       details: moor.Value(_details),
       isdone: moor.Value(false),
     ));
-    Navigator.of(context).pop();
   }
 
   @override
@@ -62,7 +61,7 @@ class _AddTodoState extends State<AddTodo> {
         disabledTextColor: Colors.black26,
         shape: StadiumBorder(),
         highlightColor: Colors.blue,
-        onPressed: !_addButtonEnabled ? null : () => {_insertTask(context)},
+        onPressed: !_addButtonEnabled ? null : () => {_insertTask(),     Navigator.of(context).pop()},
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,

@@ -12,6 +12,7 @@ class TodoView extends StatefulWidget {
 class _TodoState extends State<TodoView> {
   bool _isChecked = false;
   Database db = Database();
+  TextStyle _style = TextStyle();
 
   void changeCheck() {
     db.updateTodo(
@@ -24,6 +25,19 @@ class _TodoState extends State<TodoView> {
     setState(() {
       _isChecked = !_isChecked;
     });
+    _changeStyle();
+  }
+
+  void _changeStyle() {
+    if (!_isChecked) {
+      setState(() {
+        _style = TextStyle();
+      });
+    } else {
+      setState(() {
+        _style = TextStyle(decoration: TextDecoration.lineThrough);
+      });
+    }
   }
 
   @override
@@ -33,16 +47,36 @@ class _TodoState extends State<TodoView> {
     setState(() {
       _isChecked = value;
     });
+    _changeStyle();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(widget.todo.title),
-      value: _isChecked,
-      onChanged: (_) {
-        changeCheck();
-      },
+    return Container(
+      child: Row(children: [
+        Expanded(
+            child: Container(
+          child: Row(children: [
+            Checkbox(
+              value: _isChecked,
+              onChanged: (_) {
+                changeCheck();
+              },
+            ),
+            Flexible(
+              child: Text(
+                widget.todo.title,
+                style: _style,
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ]),
+        )),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.edit),
+        ),
+      ]),
     );
   }
 }

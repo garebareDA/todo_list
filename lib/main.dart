@@ -90,8 +90,9 @@ class _BodyState extends State<Body> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: EdgeInsets.all(60),
       child: Column(
-        children: _todoList,
+        children: _todoList.reversed.toList(),
       ),
     );
   }
