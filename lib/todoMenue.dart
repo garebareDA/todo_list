@@ -15,7 +15,7 @@ class _TodoMenueState extends State<TodoMenue> {
   String _details = "";
   TextEditingController _taskEditingController;
   TextEditingController _detailsEditingController;
-  bool _backButton = false;
+  bool _backButton = true;
   Database db = Database();
 
   void _update() {
