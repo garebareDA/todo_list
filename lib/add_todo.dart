@@ -26,12 +26,20 @@ class _AddTodoState extends State<AddTodo> {
     }
   }
 
+  void _setDetails(String details) {
+    setState(() {
+      _details = details;
+    });
+  }
+
   void _insertTask() {
-    db.addTodoEntry(TodosCompanion(
-      title: moor.Value(_task),
-      details: moor.Value(_details),
-      isdone: moor.Value(false),
-    )).then((_) => Navigator.of(context).pop());
+    db
+        .addTodoEntry(TodosCompanion(
+          title: moor.Value(_task),
+          details: moor.Value(_details),
+          isdone: moor.Value(false),
+        ))
+        .then((_) => Navigator.of(context).pop());
   }
 
   @override
@@ -43,9 +51,7 @@ class _AddTodoState extends State<AddTodo> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () => {
-            Navigator.of(context).pop()
-          },
+          onPressed: () => {Navigator.of(context).pop()},
         ),
       ),
       floatingActionButton: RaisedButton(
@@ -63,7 +69,7 @@ class _AddTodoState extends State<AddTodo> {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -88,7 +94,7 @@ class _AddTodoState extends State<AddTodo> {
                     border: OutlineInputBorder(),
                     labelText: 'Details',
                   ),
-                  onChanged: (text) => {_details = text}),
+                  onChanged: (text) => {_setDetails(text)}),
             ),
           ],
         ),

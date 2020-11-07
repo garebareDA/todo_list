@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as moor;
 import 'package:todo_list/db.dart';
+import 'package:todo_list/todoMenue.dart';
 
 class TodoView extends StatefulWidget {
   TodoView({Key key, this.todo}) : super(key: key);
@@ -14,7 +15,7 @@ class _TodoState extends State<TodoView> {
   Database db = Database();
   TextStyle _style = TextStyle();
 
-  void changeCheck() {
+  void _changeCheck() {
     db.updateTodo(
         widget.todo.id,
         TodosCompanion(
@@ -29,13 +30,13 @@ class _TodoState extends State<TodoView> {
   }
 
   void _changeStyle() {
-    if (!_isChecked) {
+    if (_isChecked) {
       setState(() {
-        _style = TextStyle();
+        _style = TextStyle(decoration: TextDecoration.lineThrough);
       });
     } else {
       setState(() {
-        _style = TextStyle(decoration: TextDecoration.lineThrough);
+        _style = TextStyle();
       });
     }
   }
@@ -60,7 +61,7 @@ class _TodoState extends State<TodoView> {
             Checkbox(
               value: _isChecked,
               onChanged: (_) {
-                changeCheck();
+                _changeCheck();
               },
             ),
             Flexible(
@@ -73,7 +74,12 @@ class _TodoState extends State<TodoView> {
           ]),
         )),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TodoMenue(todo: widget.todo)));
+          },
           icon: Icon(Icons.keyboard_arrow_right),
         ),
       ]),

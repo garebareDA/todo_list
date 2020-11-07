@@ -40,4 +40,8 @@ class Database extends _$Database {
   Future<int> updateTodo(int id, TodosCompanion todo) {
     return (update(todos)..where((it) => it.id.equals(id))).write(todo);
   }
+
+  Future<int> deleteTodo(int id) {
+    return (delete(todos)..where((it) => it.id.equals(id))).go();
+  }
 }
