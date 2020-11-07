@@ -4,29 +4,33 @@ import 'package:todo_list/db.dart';
 import 'package:todo_list/todoMenue.dart';
 
 class TodoView extends StatefulWidget {
-  TodoView({Key key, this.todo}) : super(key: key);
+  TodoView({Key key, this.todo, this.isDone}) : super(key: key);
   final Todo todo;
+  final bool isDone;
   @override
   _TodoState createState() => new _TodoState();
 }
 
 class _TodoState extends State<TodoView> {
-  bool _isChecked = false;
+  bool _isChecked;
   Database db = Database();
   TextStyle _style = TextStyle();
 
   void _changeCheck() {
-    db.updateTodo(
-        widget.todo.id,
-        TodosCompanion(
-          title: moor.Value(widget.todo.title),
-          details: moor.Value(widget.todo.details),
-          isdone: moor.Value(!_isChecked),
-        ));
-    setState(() {
-      _isChecked = !_isChecked;
-    });
-    _changeStyle();
+    db
+        .updateTodo(
+            widget.todo.id,
+            TodosCompanion(
+              title: moor.Value(widget.todo.title),
+              details: moor.Value(widget.todo.details),
+              isdone: moor.Value(!_isChecked),
+            ))
+        .then((_) => {
+              setState(() {
+                _isChecked = !_isChecked;
+              }),
+              _changeStyle()
+            });
   }
 
   void _changeStyle() {
@@ -44,9 +48,9 @@ class _TodoState extends State<TodoView> {
   @override
   void initState() {
     super.initState();
-    bool value = widget.todo.isdone;
     setState(() {
-      _isChecked = value;
+      _isChecked = widget.todo.isdone;
+      _changeStyle();
     });
     _changeStyle();
   }

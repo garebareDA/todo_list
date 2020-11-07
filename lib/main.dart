@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/add_button.dart';
+import 'package:todo_list/addButton.dart';
 import 'package:todo_list/db.dart';
 import 'package:todo_list/todo.dart';
 
@@ -41,35 +41,33 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> with RouteAware {
-  List<Widget> _todoList = List<Widget>();
+  List<Todo> _col = [];
   Database db = Database();
 
   void _updateList() {
-    setState(() {
-      _todoList = [];
-    });
-
+    List<Todo> todoList = [];
     Future<List<Todo>> future = db.allTodoEntries;
-    future
-        .then((value) => {
-              value.forEach((element) {
-                setState(() {
-                  _todoList.add(TodoView(todo: element));
-                });
-              })
-            })
-        .catchError((onError) => {print(onError.toString())});
+    future.then((value) => {
+          value.forEach((element) {
+            todoList.add(element);
+          }),
+          setState(() {
+            _col = todoList.reversed.toList();
+          }),
+        });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _updateList();
     routeObserver.subscribe(this, ModalRoute.of(context));
   }
 
   @override
   void dispose() {
     super.dispose();
+    _updateList();
     routeObserver.unsubscribe(this);
   }
 
@@ -87,11 +85,12 @@ class _BodyState extends State<Body> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return ListView.builder(
       padding: EdgeInsets.all(60),
-      child: Column(
-        children: _todoList.reversed.toList(),
-      ),
+      itemCount: _col.length,
+      itemBuilder: (BuildContext context, int index) {
+        return TodoView(todo:_col[index]);
+      },
     );
   }
 }
