@@ -23,8 +23,8 @@ class _TodoMenueState extends State<TodoMenue> {
         .updateTodo(
             widget.todo.id,
             TodosCompanion(
-              title: moor.Value(widget.todo.title),
-              details: moor.Value(widget.todo.details),
+              title: moor.Value(_task),
+              details: moor.Value(_details),
               isdone: moor.Value(widget.todo.isdone),
             ))
         .then((_) => {Navigator.of(context).pop()});
@@ -71,9 +71,9 @@ class _TodoMenueState extends State<TodoMenue> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.white,
             ),
-            onPressed: () => {_update()},
+            disabledColor: Colors.black26,
+            onPressed: !_backButton ? null : () => {_update()},
           ),
           actions: [
             IconButton(
