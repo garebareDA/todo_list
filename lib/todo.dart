@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:moor/moor.dart' as moor;
 import 'package:todo_list/db.dart';
 import 'package:todo_list/todoMenue.dart';
+import 'package:todo_list/main.dart';
 
 class TodoView extends StatefulWidget {
-  TodoView({Key key, this.todo, this.isDone}) : super(key: key);
+  TodoView({Key key, this.todo}) : super(key: key);
   final Todo todo;
-  final bool isDone;
   @override
   _TodoState createState() => new _TodoState();
 }
 
-class _TodoState extends State<TodoView> {
+class _TodoState extends State<TodoView> with RouteAware {
   bool _isChecked;
   Database db = Database();
   TextStyle _style = TextStyle();
@@ -45,14 +45,37 @@ class _TodoState extends State<TodoView> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void _changeState() {
     setState(() {
       _isChecked = widget.todo.isdone;
       _changeStyle();
     });
-    _changeStyle();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _changeState();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _changeState();
+    routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    _changeState();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _changeState(); 
   }
 
   @override
