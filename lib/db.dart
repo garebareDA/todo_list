@@ -29,8 +29,8 @@ class Database extends _$Database {
   Database() : super(_openConnection());
   Future<List<Todo>> get allTodoEntries => select(todos).get();
 
-  Stream<Todo> todoById(int id) {
-    return (select(todos)..where((tbl) => tbl.id.equals(id))).watchSingle();
+  Future<List<Todo>> todoById(int id) {
+    return (select(todos)..where((tbl) => tbl.id.equals(id))).get();
   }
 
   Future<int> addTodoEntry(TodosCompanion entry) {

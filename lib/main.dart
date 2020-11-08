@@ -89,7 +89,9 @@ class _BodyState extends State<Body> with RouteAware {
       padding: EdgeInsets.all(60),
       itemCount: _col.length,
       itemBuilder: (BuildContext context, int index) {
-        return TodoView(todo: _col[index]);
+        return Card(
+          child: TodoView(todo: _col[index]),
+        );
       },
     );
   }

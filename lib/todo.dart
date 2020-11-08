@@ -75,7 +75,7 @@ class _TodoState extends State<TodoView> with RouteAware {
   @override
   void initState() {
     super.initState();
-    _changeState(); 
+    _changeState();
   }
 
   @override
