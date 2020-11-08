@@ -42,11 +42,11 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> with RouteAware {
   List<Todo> _col = [];
-  Database db = Database();
+  Database _db = Database();
 
   void _updateList() {
     List<Todo> todoList = [];
-    Future<List<Todo>> future = db.allTodoEntries;
+    Future<List<Todo>> future = _db.allTodoEntries;
     future.then((value) => {
           value.forEach((element) {
             todoList.add(element);

@@ -16,6 +16,7 @@ class _TodoMenueState extends State<TodoMenue> {
   TextEditingController _taskEditingController;
   TextEditingController _detailsEditingController;
   bool _backButton = true;
+  bool _isChecked;
   Database db = Database();
 
   void _update() {
@@ -31,9 +32,7 @@ class _TodoMenueState extends State<TodoMenue> {
   }
 
   void _delete() {
-    db.deleteTodo(widget.todo.id).then((_) => {
-      Navigator.of(context).pop()
-    });
+    db.deleteTodo(widget.todo.id).then((_) => {Navigator.of(context).pop()});
   }
 
   void _setTask(String task) {
