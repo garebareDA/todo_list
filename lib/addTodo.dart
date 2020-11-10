@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moor/moor.dart' as moor;
+import 'package:todo_list/db.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class _AddTodoState extends State<AddTodo> {
   String _task = "";
   String _details = "";
   bool _addButtonEnabled = false;
+  Database db = Database();
 
   void _setTask(String task) {
     if (task != '') {
@@ -23,10 +26,20 @@ class _AddTodoState extends State<AddTodo> {
     }
   }
 
-  void _insertTask(BuildContext context) {
-    print(_task);
-    print(_details);
-    Navigator.of(context).pop();
+  void _setDetails(String details) {
+    setState(() {
+      _details = details;
+    });
+  }
+
+  void _insertTask() {
+    db
+        .addTodoEntry(TodosCompanion(
+          title: moor.Value(_task),
+          details: moor.Value(_details),
+          isdone: moor.Value(false),
+        ))
+        .then((_) => Navigator.of(context).pop());
   }
 
   @override
@@ -38,7 +51,7 @@ class _AddTodoState extends State<AddTodo> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () => {_insertTask(context)},
+          onPressed: () => {Navigator.of(context).pop()},
         ),
       ),
       floatingActionButton: RaisedButton(
@@ -52,12 +65,11 @@ class _AddTodoState extends State<AddTodo> {
         disabledTextColor: Colors.black26,
         shape: StadiumBorder(),
         highlightColor: Colors.blue,
-        onPressed:
-            !_addButtonEnabled ? null : () => {Navigator.of(context).pop()},
+        onPressed: !_addButtonEnabled ? null : () => {_insertTask()},
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -76,13 +88,13 @@ class _AddTodoState extends State<AddTodo> {
             Container(
               margin: EdgeInsets.all(5),
               child: TextField(
-                  maxLines: 10,
+                  maxLines: 9,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Details',
                   ),
-                  onChanged: (text) => {_details = text}),
+                  onChanged: (text) => {_setDetails(text)}),
             ),
           ],
         ),
